@@ -1,0 +1,20 @@
+#!/bin/bash
+
+#SBATCH --job-name=minimap2      ## Name of the job.
+#SBATCH -A grylee_lab     ## account to charge
+#SBATCH -p standard          ## partition/queue name
+#SBATCH --nodes=1            ## (-N) number of nodes to use
+#SBATCH --ntasks=1           ## (-n) number of tasks to launch
+#SBATCH --cpus-per-task=10    ## number of cores the job needs
+#SBATCH --error=slurm-%J.err ## error log file
+
+module load minimap2/2.23
+minimap2 -cx asm10 --cs=long A6_genomic.fna A4_genomic.fna > A6_refer_A4_query_asm10_update.paf
+
+curl -L https://github.com/attractivechaos/k8/releases/download/v0.2.4/k8-0.2.4.tar.bz2 | tar -jxf -
+cp k8-0.2.4/k8-`uname -s` k8              # or copy it to a directory on your $PATH
+export PATH="$PATH:`pwd`:`pwd`/misc"
+
+sort -k6,6 -k8,8n A6_refer_A4_query_asm10_update.paf > A6_refer_A4_query_asm10_update.srt.paf
+k8 paftools.js call /dfs7/grylee/yuhenh3/recombination_rate/A6_refer_A4_query_asm10_update.srt.paf > /dfs7/grylee/yuhenh3/recombination_rate/A6_refer_A4_query_asm10_update.var.txt
+k8 paftools.js call -f /dfs7/grylee/yuhenh3/recombination_rate/A6_genomic.fna /dfs7/grylee/yuhenh3/recombination_rate/A6_refer_A4_query_asm10_update.srt.paf > /dfs7/grylee/yuhenh3/recombination_rate/A6_refer_A4_query_asm10_update.var.vcf
