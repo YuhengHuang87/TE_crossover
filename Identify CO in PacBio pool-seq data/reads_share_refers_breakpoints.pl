@@ -134,7 +134,7 @@ print "$loca[$i]\t","$left_count\t","$right_count\t","$left_consist\t","$right_c
 
 
 ######## identify candidate reads with double COs
-my $snp_num=4;my %tot_read;my %tot_read2;my %focal_read;my %focal_read2;
+$snp_num=4;my %tot_read;my %tot_read2;my %focal_read;my %focal_read2;
 my $num_snp=0; my $num_snp2=0; my $num_read=0;my $num_read2=0; my $total_num=0;my $total_num2=0;
 my $inter_snp=2;
 my $last_win;
@@ -160,11 +160,9 @@ my $win_location=$b[0]."\t".$b[1]."\t".$b[2]."\t".$b[3]."\t".$b[4]."\t".$b[5];
 			}else{
 		$focal_read{$region}=1;
 		$num_read++;
-}
-}
+}}
 $last_win=$win_location;
-}
-}
+}}
 close FILE1;
 
 my $outfile3=$ref[$j]."_share_benchmark_pool_sliding_window_prop_posi_".$snp_num.".txt";
