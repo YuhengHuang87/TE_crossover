@@ -1,0 +1,30 @@
+#!/bin/bash
+
+#SBATCH --job-name=single_Pacbio      ## Name of the job.
+#SBATCH -A grylee_lab     ## account to charge
+#SBATCH -p standard          ## partition/queue name
+#SBATCH --nodes=1            ## (-N) number of nodes to use
+#SBATCH --ntasks=1           ## (-n) number of tasks to launch
+#SBATCH --cpus-per-task=16    ## number of cores the job needs
+#SBATCH --error=slurm-%J.err ## error log file
+
+###install pbmm2 1.14.99
+###indexing
+pbmm2 index /dfs7/grylee/yuhenh3/recombination_rate/A4_genomic.fna A4_genomic.mmi
+pbmm2 index /dfs7/grylee/yuhenh3/recombination_rate/A6_genomic.fna A6_genomic.mmi
+pbmm2 index /dfs7/grylee/yuhenh3/recombination_rate/A7_genomic.fna A7_genomic.mmi
+####mapping:
+#benchmark
+pbmm2 align /dfs7/grylee/yuhenh3/recombination_rate/A6_genomic.fna.mmi PacBio_pool_benchmark.subreads.bam aln_A6_benchmark_pool.bam
+pbmm2 align /dfs7/grylee/yuhenh3/recombination_rate/A4_genomic.fna.mmi PacBio_pool_benchmark.subreads.bam aln_A4_benchmark_pool.bam
+
+samtools sort aln_A6_benchmark_pool.bam -o aln_A6_benchmark_pool_sorted.sam
+samtools sort aln_A4_benchmark_pool.bam -o aln_A4_benchmark_pool_sorted.sam
+
+#batch1 of A7 experimental pool as an example
+pbmm2 align /dfs7/grylee/yuhenh3/recombination_rate/A7_genomic.fna.mmi A7_PacBio_pool_batch1.subreads.bam aln_A7_A7Pool_batch1.bam
+pbmm2 align /dfs7/grylee/yuhenh3/recombination_rate/A4_genomic.fna.mmi A7_PacBio_pool_batch1.subreads.bam aln_A4_A7Pool_batch1.bam
+
+samtools sort aln_A7_A7Pool_batch1.bam -o aln_A7_A7Pool_batch1_sorted.sam
+samtools sort aln_A4_A7Pool_batch1.bam -o aln_A4_A7Pool_batch1_sorted.sam
+
