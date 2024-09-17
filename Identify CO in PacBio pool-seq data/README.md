@@ -11,5 +11,7 @@ I. Pipeline of identifying CO in PacBio pool-seq sequence data
 
 
 II. Compare the distribution of CO from our approach with an existing map from the standard genotyping approach
+There are three files containing CO information: The map for the standard genotyping approach was obtained from Comeron et al. 2012: Comeron_2012_PLoSGent_inR6.txt; CO identified in A6 experimental pool: A6_cross_output.txt; and CO identified in A7 experimental pool: A7_cross_output.txt
+1. Normalize CO numbers in experimental pools by depth and convert coordinates to iso-1 release 6: perl the convert_v6_map_A6_A7_CO_depth_normalized.pl
 
 
