@@ -75,7 +75,7 @@ open(OUT1, ">$outfile1");
 my $file = '';
 my @cross;
 my $n=0;my $hit=0;my $loca;
-$file = "/dfs7/grylee/yuhenh3/recombination_rate/".$strain."_cross_pacbio/".$strain."_cross_output";
+$file = $strain."_cross_output.txt";
   open I, "<$file" or print "Can't open /$file\n";
 	while(my $count = <I>){
   	chomp($count);
