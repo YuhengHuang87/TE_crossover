@@ -8,5 +8,5 @@ I. Pipeline of identifying CO in PacBio pool-seq sequence data
 5. Identify candidate CO reads and reads that show more than one parental origin switch: perl reads_share_refers_breakpoints.pl
 6. Zoom in the location of CO and filter out reads when the CO breakpoint is located near the edge of the alignment: perl CO_location_exclu_double_CO_close_edge.pl
 
-II. In the  folder, compare the distributions of COs between our approach and the standard genotyping approach.
+II. In the Compare the distributions of COs from different approaches folder, compare the distributions of COs between our approach and the standard genotyping approach.
 
