@@ -3,6 +3,8 @@
 use warnings;
 use List::Util qw(sum);
 
+#please check the format of CIGAR in sam files and adjust the code from line 78-91
+
 my $k;
 my $file = '';
 $k="00";
@@ -63,6 +65,7 @@ $num="";
 for (my $i=0; $i < scalar(@rep); $i++) {
 @read_list=(@read_list,($type[$i])x$rep[$i]);
 if ($type[$i] =~ m/=|X|D|N/){
+  #if ($type[$i] =~ m/M|D|N/){
 $len=$len+$rep[$i];
 }}
 
@@ -73,15 +76,19 @@ my $read_position=0;
 
 foreach my $base_type (@read_list){
 if($base_type =~ m/=|X|D|N/){
+#if($base_type =~ m/M|D|N/){
 $nucl_position++;
 }
 if($base_type =~ m/=|X|I|S/){
+#if($base_type =~ m/M|I|S/){
 $nucl_index++;
 }
 if($base_type =~ m/=|X|I|S|H/){
+#if($base_type =~ m/M|I|S|H/){
 $read_position++;
 }
 if(($base_type eq "=")||($base_type eq "X")){
+#if(($base_type eq "M")){
 my $read_allele=$a[0]."\t".$a[2]."\t".$a[3]."\t".$read_position."\t".$nucl_position."\t".$nucl_list[$nucl_index];
 my $site=$a[2]."\t".$nucl_position;
 	if($a[2] =~ m/105/){
