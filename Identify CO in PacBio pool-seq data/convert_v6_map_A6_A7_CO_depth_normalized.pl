@@ -134,8 +134,7 @@ my @site_depth=();
 my $sum_cover=0;my $loca=''; my $win_loca=''; my $TE_loca='';
 my $sum_site_dept=0;
 
-$file1 = "/dfs7/grylee/yuhenh3/recombination_rate/A6_A6Pool_batch1_2_3_depth_q20_snp_pass.txt";#change for the strains
-#$file1 = "/dfs7/grylee/yuhenh3/recombination_rate/A7_A7Pool_batch2_3_depth_q20_snp_pass.txt";
+$file1 = $strain."_assembly_".$strain."_pool_read_pass_snp_".$snp_num"._depth.txt";
   open F, "<$file1" or print "Can't open /$file1\n";
 	while(my $count = <F>){
   	chomp($count);
