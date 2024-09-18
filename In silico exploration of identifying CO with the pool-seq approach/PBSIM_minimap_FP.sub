@@ -1,0 +1,25 @@
+#!/bin/bash
+
+#SBATCH --job-name=single_Pacbio      ## Name of the job.
+#SBATCH -A grylee_lab     ## account to charge
+#SBATCH -p standard          ## partition/queue name
+#SBATCH --nodes=1            ## (-N) number of nodes to use
+#SBATCH --ntasks=1           ## (-n) number of tasks to launch
+#SBATCH --cpus-per-task=32    ## number of cores the job needs max 64
+#SBATCH --error=slurm-%J.err ## error log file
+#SBATCH -t 1-00:00:00
+
+module load minimap2/2.23 
+module load samtools/1.15.1
+
+##You could install pbsim via mamba: mamba install pbsim2
+pbsim --data-type CLR --depth 100 --length-max 200000 --model_qc model_qc_clr --length-mean 18000 --length-sd 2500 A6_genomic.fna
+cat sd_*fastq > A6_own_pbsim_100x.fastq
+
+pbsim --data-type CLR --depth 100 --length-max 200000 --model_qc model_qc_clr --length-mean 18000 --length-sd 2500 A4_genomic.fna
+cat sd_*fastq > A4_own_pbsim_100x.fastq
+
+minimap2 -ax map-pb --secondary=no -t 32 A6_genomic.fna A4_own_pbsim_100x.fastq > aln_A6_pbsim_A4_100x.sam
+minimap2 -ax map-pb --secondary=no -t 32 A4_genomic.fna A4_own_pbsim_100x.fastq > aln_A4_pbsim_A4_100x.sam
+minimap2 -ax map-pb --secondary=no -t 32 A6_genomic.fna A6_own_pbsim_100x.fastq > aln_A6_pbsim_A6_100x.sam
+minimap2 -ax map-pb --secondary=no -t 32 A4_genomic.fna A6_own_pbsim_100x.fastq > aln_A4_pbsim_A6_100x.sam
