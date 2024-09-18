@@ -15,5 +15,6 @@ There are three files containing CO information: The map for the standard genoty
 1. Normalize CO numbers in each experimental pool by depth and convert coordinates to iso-1 release 6: perl the convert_v6_map_A6_A7_CO_depth_normalized.pl
 2. combine outputs from different experimental pools: join -j 2 -o 1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,2.4,2.5,2.6,2.7,2.8 <(sort -k2 CO_broad_A6_focal_window_depth.txt) <(sort -k2 CO_broad_A7_focal_window_depth.txt) > comeron_pool_A6_A7_100kb_rate_depth_normalized
 3. perform sliding windows analysis to show distributions of CO along chromosome arms: perl sliding_win_CO_cor_Comeron_A6_A7.pl
+4. analysis and plot the data: rec_map_comeron_A6_A7.R
 
 
