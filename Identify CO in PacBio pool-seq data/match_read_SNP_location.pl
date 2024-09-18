@@ -38,7 +38,7 @@ open(FILE1,"<", "$file")||die"$!";
 
 my %read;my %num_dup; my $dup=0; my $total_mapped=0; my $SA=0;
 
-$file =$k."_to_do_aln_A7_A7Pool_batch3_sorted_que20_sam";
+$file ="aln_A7_A7Pool_batch3_sorted_que20_prefix".$k;
 open I, "<$file" or print "Can't open /$file\n";
 	while(my $count = <I>){
   	chomp($count);
