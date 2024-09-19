@@ -1,0 +1,64 @@
+#!/bin/bash
+
+#SBATCH --job-name=cut_tag      ## Name of the job.
+#SBATCH -A grylee_lab     ## account to charge
+#SBATCH -p standard          ## partition/queue name
+#SBATCH --nodes=1            ## (-N) number of nodes to use
+#SBATCH --ntasks=1           ## (-n) number of tasks to launch
+#SBATCH --cpus-per-task=8    ## number of cores the job needs
+#SBATCH --error=slurm-%J.err ## error log file
+#SBATCH -t 5-20:00:00
+
+module load bwa/0.7.17
+module load samtools/1.10
+module load bedtools2/2.29.2
+module load bowtie2/2.4.5
+
+for id in A6_1 A6_2 A6_3
+
+do
+reads_1="${id}-READ1-Sequences.txt"
+reads_2="${id}-READ2-Sequences.txt"
+trim_reads_1="${reads_1}_val_1.fq"
+trim_reads_2="${reads_2}_val_2.fq"
+
+echo "${reads_1}"
+trim_galore --pair ${reads_1} ${reads_2} --fastqc --illumina
+bowtie2-build A6_genomic.fna /bowtie2Index/A6
+bowtie2 --local --very-sensitive --no-mixed --no-discordant --phred33 -I 10 -X 700 -p 8 -x /bowtie2Index/A6 -1 ${trim_reads_1} -2 ${trim_reads_2} -S output_${id}_ref_A6_bowtie2.sam &> output_ref_A6_${id}_bowtie2.txt
+
+samtools view -bS -q 20 -F 0x04 output_${id}_ref_A6_bowtie2.sam > output_${id}_ref_A6_sorted_mapped.bam
+samtools faidx A6_genomic.fna
+awk -v OFS='\t' {'print $1,$2'} A6_genomic.fna.fai > A6_genomeFile.txt
+
+bedtools bamtobed -i output_${id}_ref_A6_sorted_mapped.bam -bedpe > ${id}_ref_A6_bowtie2.bed
+awk '$1==$4 && $6-$2 < 1000 {print $0}' ${id}_ref_A6_bowtie2.bed > ${id}_ref_A6_bowtie2.clean.bed
+cut -f 1,2,6 ${id}_ref_A6_bowtie2.clean.bed | sort -k1,1 -k2,2n -k3,3n > ${id}_ref_A6_bowtie2.fragments.bed
+bedtools genomecov -bga -i ${id}_ref_A6_bowtie2.fragments.bed -g /dfs7/grylee/yuhenh3/recombination_rate/A6_genomeFile.txt > ${id}_ref_A6_bowtie2.fragments.bedgraph
+
+done
+
+for id in A7_1 A7_2 A7_3
+
+do
+reads_1="${id}-READ1-Sequences.txt"
+reads_2="${id}-READ2-Sequences.txt"
+trim_reads_1="${reads_1}_val_1.fq"
+trim_reads_2="${reads_2}_val_2.fq"
+
+echo "${reads_1}"
+trim_galore --pair ${reads_1} ${reads_2} --fastqc --illumina
+
+bowtie2-build A7_genomic.fna /bowtie2Index/A7
+bowtie2 --local --very-sensitive --no-mixed --no-discordant --phred33 -I 10 -X 700 -p 8 -x /bowtie2Index/A7 -1 ${trim_reads_1} -2 ${trim_reads_2} -S output_${id}_ref_A7_bowtie2.sam &> output_ref_A7_${id}_bowtie2.txt
+
+samtools view -bS -q 20 -F 0x04 output_${id}_ref_A7_bowtie2.sam > output_${id}_ref_A7_sorted_mapped.bam
+samtools faidx A7_genomic.fna
+awk -v OFS='\t' {'print $1,$2'} A7_genomic.fna.fai > A7_genomeFile.txt
+
+bedtools bamtobed -i output_${id}_ref_A7_sorted_mapped.bam -bedpe > ${id}_ref_A7_bowtie2.bed
+awk '$1==$4 && $6-$2 < 1000 {print $0}' ${id}_ref_A7_bowtie2.bed > ${id}_ref_A7_bowtie2.clean.bed
+cut -f 1,2,6 ${id}_ref_A7_bowtie2.clean.bed | sort -k1,1 -k2,2n -k3,3n > ${id}_ref_A7_bowtie2.fragments.bed
+bedtools genomecov -bga -i ${id}_ref_A7_bowtie2.fragments.bed -g /dfs7/grylee/yuhenh3/recombination_rate/A7_genomeFile.txt > ${id}_ref_A7_bowtie2.fragments.bedgraph
+
+done
