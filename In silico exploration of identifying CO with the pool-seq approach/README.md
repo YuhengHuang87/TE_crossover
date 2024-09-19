@@ -10,4 +10,5 @@ II. Test the impact of sequencing, depth, and structural variants on the false n
 5. calculate recall rate per event and binning them: perl percentage_recombinant_events_recall.pl
 6. Identify reads overlap with TEs or SVs (master_table_d10_100bp.txt contains SV profiles, obtained from Chakraborty et al. 2019): perl classify_PBSIM_CO_reads_contrain_TE_SV.pl
 7. check recall rates for reads w/ and w/o TEs or SVs: perl percentage_pbsim_CO_reads_recalled_TE_SV_within.pl
+8. analysis and plot the results: simulation_analysis.R
 
