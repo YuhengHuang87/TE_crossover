@@ -1,0 +1,25 @@
+#!/bin/bash
+
+#SBATCH --job-name=assign      ## Name of the job.
+#SBATCH -A grylee_lab     ## account to charge
+#SBATCH -p standard          ## partition/queue name
+#SBATCH --nodes=1            ## (-N) number of nodes to use
+#SBATCH --ntasks=1           ## (-n) number of tasks to launch
+#SBATCH --cpus-per-task=8    ## number of cores the job needs
+#SBATCH --error=slurm-%J.err ## error log file
+
+module load repeatmodeler/2.0.0
+module load ncbi-blast/2.13.0
+module load repeatmasker/4.1.0
+
+BuildDatabase -name A6 -engine ncbi A6_genomic.fna
+/usr/bin/time -v RepeatModeler -engine ncbi -pa 8 -database A6 -LTRStruct
+RepeatMasker -pa 8 -s -lib A6-families.fa A6_genomic.fna
+
+BuildDatabase -name A7 -engine ncbi A7_genomic.fna
+/usr/bin/time -v RepeatModeler -engine ncbi -pa 8 -database A7 -LTRStruct
+RepeatMasker -pa 8 -s -lib A7-families.fa A7_genomic.fna
+
+perl extract_TE_repeatmasker_output.pl
+
+blastn -query A6_TE_library_euchro.fasta -db dmel-all-transposon-r6.32_canonicalBLAST -out A6_combineTE_canonical_db_80_blast_euchro_10 -evalue 1e-10 -perc_identity 80 -num_threads 3 -num_alignments 10 -outfmt 6
