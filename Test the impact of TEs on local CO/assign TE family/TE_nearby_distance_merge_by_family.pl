@@ -61,9 +61,10 @@ print "$name[$j] ","$t ","$c\n";
 }
 }
 
+my $dis=5000;
 for (my $k=0; $k<@name; $k+=1){
 foreach my $e (@cutoff){
-my $outfile=$name[$k]."_exclu_within_".$dis."bp_distance_nearbyall_TE_euchromatic_blast_euchromatic_include_ambiguous".$e;
+my $outfile=$name[$k]."_exclu_within_".$dis."bp_distance_nearbyall_TE_euchromatic.txt";
 open(OUT, ">$outfile");
 
 my $t=0;my $c=0;
