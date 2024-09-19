@@ -5,3 +5,4 @@ I. explore the false positive rate with in silico simulation
 II. Test the impact of sequencing, depth, and structural variants on the false negative CO recall rate
 1. generate recombinant haplotypes (one CO per chromosome arm): perl generate_one_recombiant_individual_chro_arm.pl
 2. run PBSIM to simulate PacBio long reads, extract those read with obtain_PBSIM_reads_recombinant.pl, and map those CO reads: sbatch PBSIM_minimap_False_negative.sub
+3. run the pipeline as above to recall CO events using our approach
