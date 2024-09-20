@@ -10,8 +10,8 @@ a. CO number
 
 
 b. Distance to the nearest CO
-1. Calculate the distance to the nearest CO for TEs and control location: perl distance_nearest_CO_TE_flanking_control.pl
-2. Estimate the SNP density and depth for the region for TEs and control location to the nearest CO: perl assign_SNP_depth_nearest_CO_distance_flanking_TE_control_within_strains.pl
+1. Calculate the distance to the 1st and 2nd nearest COs for TEs and control location: perl distance_nearest_CO_TE_flanking_control.pl
+2. Estimate the SNP density and depth for the region for TEs and control location to the 1st and 2nd nearest COs: perl assign_SNP_depth_nearest_CO_distance_flanking_TE_control_within_strains.pl
 
 C. Analyze and plot the data: With_strain_analysis.R
 
