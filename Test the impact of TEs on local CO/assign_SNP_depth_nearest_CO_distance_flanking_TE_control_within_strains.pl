@@ -12,9 +12,9 @@ open(OUT, ">$outfile");
 my %win_bound;my $window_left;my $chro_window;
 my %TE_site;
 my $file = ''; my $file1 = ''; 
-#$file = "/dfs7/grylee/yuhenh3/recombination_rate/".$strain."_nearest_CO_distance_TE_included_window_exclude_TE_overlapped_average.txt";
+#$file = $strain."_nearest_CO_distance_TE_included_window_exclude_TE_overlapped_average.txt";
 
-$file = "/dfs7/grylee/yuhenh3/recombination_rate/".$strain."_nearest_CO_distance_control_included_window_exclude_TE_overlapped_average.txt";
+$file = $strain."_nearest_CO_distance_control_included_window_exclude_TE_overlapped_average.txt";
   open I, "<$file" or print "Can't open /$file\n";
 	while(my $count = <I>){
   	chomp($count);
@@ -36,8 +36,8 @@ my @site_depth=();
 my $sum_cover=0;my $loca=''; my $win_loca=''; my $TE_loca='';
 my $sum_site_dept=0;
 
-#$file1 = "/dfs7/grylee/yuhenh3/recombination_rate/A6_A6Pool_batch1_2_3_depth_q20_snp_pass.txt";#change for the strains
-$file1 = "/dfs7/grylee/yuhenh3/recombination_rate/A7_A7Pool_batch2_3_depth_q20_snp_pass.txt";
+#$file1 = "A6_A6Pool_batch1_2_3_depth_q20_snp_pass.txt";#change for the strains
+$file1 = "A7_A7Pool_batch2_3_depth_q20_snp_pass.txt";
   open F, "<$file1" or print "Can't open /$file1\n";
 	while(my $count = <F>){
   	chomp($count);
@@ -97,7 +97,7 @@ my $file = '';
 
 my $cov=0; my $snp=0; my $dis=0;
 my %TE_win;
-$file = "/dfs7/grylee/yuhenh3/recombination_rate/".$strain."_nearest_CO_distance_mean_Mass_TE_HMD_25_1000_10_measures_include_ambiguous.txt";
+$file = $strain."_nearest_CO_distance_mean_Mass_TE_HMD_25_1000_10_measures_include_ambiguous.txt";
   open I, "<$file" or print "Can't open /$file\n";
   while(my $count = <I>){
     chomp($count);

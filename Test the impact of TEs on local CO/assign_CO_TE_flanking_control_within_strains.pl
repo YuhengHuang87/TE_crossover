@@ -86,7 +86,7 @@ $file = $strain."_real_pool_coverage_SNP_window_TE_euchromatic_include_ambiguous
 }}
 
 
-$file = "/dfs7/grylee/yuhenh3/recombination_rate/".$strain."_real_pool_SNP_coverage_window_control_window_include_ambiguous_".$control_win_size;
+$file = $strain."_real_pool_SNP_coverage_window_control_window_include_ambiguous_".$control_win_size;
   open I, "<$file" or print "Can't open /$file\n";
   while(my $count = <I>){
     chomp($count);
