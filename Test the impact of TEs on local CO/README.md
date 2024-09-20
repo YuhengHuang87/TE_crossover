@@ -17,3 +17,20 @@ C. Analyze and plot the data: Within_strain_analysis.R
 
 
 IV. Between strains analysis
+a. Identify focal and homologous alleles
+1. Identify homologous alleles in alternative strains: perl TE_control_window_alignment_convert.pl
+2. Exclude homologous alleles with TEs located nearby: perl focal_homolog_allele_exclude_nearby_TE.pl
+
+b. CO number
+1. Obtain the SNP number and depth for the homologous allele without TEs and control alleles in both strains: perl assign_SNP_num_depth_window_flanking_TE_control_between_strains.pl
+2. calculate the CO numbers for flanking regions of alleles without TEs and control alleles in both strains: perl assign_CO_TE_flanking_control_between_strains.pl
+
+c.Distance to the nearest CO
+1. Use the same script to calculate the distance to the 1st and 2nd nearest COs in homologous alleles: perl distance_nearest_CO_TE_flanking_control.pl
+2. Estimate the SNP density and depth for regions for these alleles to the 1st and 2nd nearest COs: perl assign_SNP_depth_nearest_CO_distance_flanking_TE_control_between_strains.pl
+
+d. Analyze and plot the data
+1.
+
+
+
