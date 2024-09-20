@@ -1,4 +1,4 @@
-I. run scripts in folder /assign TE family
+I. Annotate TEs to family level with scripts in folder /assign TE family
 
 II. Analyze the CUT&Tag sequence data with scripts in folder /CUT&Tag analysis
 
