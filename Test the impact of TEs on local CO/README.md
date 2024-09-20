@@ -30,7 +30,8 @@ c. Distance to the nearest CO
 2. Estimate the SNP density and depth for regions for these alleles to the 1st and 2nd nearest COs: perl assign_SNP_depth_nearest_CO_distance_flanking_TE_control_between_strains.pl
 
 d. Analyze and plot the data
-1.
+1. Make figures and perform Mann–Whitney U tests: Between_strains_analysis.R
+2. Perform bootstrapping tests: bootstrapping_test.R
 
 
 
