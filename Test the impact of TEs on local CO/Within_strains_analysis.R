@@ -34,6 +34,7 @@ wilcox.test(focal$depth,control$depth,  exact=FALSE, correct=FALSE, paired = FAL
 wilcox.test(focal$snp,control$snp,  exact=FALSE, correct=FALSE, paired = FALSE);median(focal$snp);median(control$snp)
 wilcox.test(focal$co,control$co,alternative= "less",  exact=FALSE, correct=FALSE, paired = FALSE);mean(focal$co);mean(control$co)
 
+### Fig. S6
 #CC79A7
 #56B4E9
 total$focal.group <- factor(total$focal.group, levels = c('foc','con'),ordered = TRUE)##CC79A7,#56B4E9
@@ -43,7 +44,7 @@ dp <- ggplot(total, aes(x=focal.group, y=focal.snp, fill=focal.group,color=focal
   labs(x="TE or not", y = "SNP")
 dp<-dp+mytheme;dp
 ggsave(file = paste("/Users/yuhenghuang/Documents/Postdoc_UCI/recombination/result/plot/SNP_to_CO_5kb_control_A6.pdf", sep = ""), plot = dp, width = 7, height = 5)
-
+###
 
 library(MASS);library("dplyr") 
 m2 <- glm.nb(focal.co ~ focal.group+focal.depth+focal.snp,  data=total);summary(m2)
@@ -61,16 +62,42 @@ sum(E2^2) / (N - p)
 
 #### Fig. 3B
 total$focal.group <- factor(total$focal.group, levels = c('focal','con'),ordered = TRUE)##CC79A7,#56B4E9
-dp <- ggplot(total, aes(x=focal.group, y=focal.co, fill=focal.group,color=focal.group)) + scale_fill_manual(values=c('#56B4E9','grey'))+
-  geom_violin(trim = F, color = "black")+
-  #geom_point(position = position_jitter(seed = 1, width = 0.45),size=0.8,alpha = 0.1) +
-  
-  #geom_dotplot(binaxis= "y",dotsize=0.1, binwidth=.7,stackdir ="center", stackratio=.1)+
-  ylim(-0.5,5)+
-  labs(x="region", y = "CO number")
-p2<-dp+mytheme;p2
+library(ggplot2)
+library(gridExtra)
+
+mytheme = theme(
+  #	plot.background = element_rect(fill = 'black', color = "black"), 
+  axis.ticks.y = element_line(color = "black", linewidth = 0.45), 
+  axis.ticks.x = element_line(color = "black", linewidth = 0.45), 
+  axis.ticks.length = unit(0.2, "cm"), 
+  axis.line.x = element_line(color = "black", linewidth = 0.8), 
+  axis.line.y = element_line(color = "black", linewidth = 0.8), 
+  axis.text.x = element_text(color = 'black', size  = 12, margin = margin(rep(4, 4))), 
+  axis.text.y = element_text(color = 'black', size =  12, margin = margin(rep(2, 4))), 
+  axis.title.x = element_text(color = "black", size = 7, margin = margin(rep(15, 4))), 
+  axis.title.y = element_text(color = "black", size = 7,  margin = margin(rep(15, 4))), 
+  plot.title = element_text(color = "black", size =   7, margin = margin(rep(15, 4))), 
+  legend.position = c(1.15, 0.9),
+  aspect.ratio = 0.8,
+  panel.background = element_rect(fill = "white"), 
+  #	panel.border = element_blank(),
+  panel.grid.major.y = element_blank(), 
+  panel.grid.minor.y = element_blank(), 
+  panel.grid.major.x = element_blank(), 
+  panel.grid.minor.x = element_blank(),
+  legend.background = element_blank())
+
+dp <- ggplot(total, aes(x=focal.group, y=focal.co,color=focal.group)) +
+  #geom_count()+
+  geom_count(aes(size = after_stat(prop)))+ scale_size_area()+ 
+  scale_color_manual(values=c('#56B4E9','grey'))+
+  ylim(-0.5,4)+
+  mytheme
+dp
 ggsave(file = paste("/Users/yuhenghuang/Documents/Postdoc_UCI/recombination/result/plot/CO_within_strain_A7.pdf", sep = ""), plot = p2, width = 7, height = 5)
 
+
+####
 rec<-read.table("/Users/yuhenghuang/Documents/Postdoc_UCI/recombination/result/A7_crossover_num_TE_left_right_window_magnitude_5000_5000_include_ambiguous.txt",header=F)#CO & magnitude
 foo <- data.frame(do.call('rbind', strsplit(as.character(rec$V13),'/',fixed=TRUE)));rec$class <- foo$X1;rec<-rec[rec$class != "Unknown", ];rec$TE_type<-ifelse(rec$class == "DNA","DNA","RNA")
 rec$K9_mag_left<-(rec$V17+rec$V18+rec$V19)/3
